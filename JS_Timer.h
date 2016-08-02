@@ -24,5 +24,5 @@ class JS_Timer {
         uint8_t setInterval(funcPointer, uint32_t);  // note function and durration to interval trigger
         uint8_t setTimeout(funcPointer, uint32_t);   // note function and durration to timeout trigger
     private:
-        byte addTimer(funcPointer, unsigned long, boolean);
+        byte addTimer(funcPointer, uint32_t, boolean);
 };
