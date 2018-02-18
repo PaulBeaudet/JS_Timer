@@ -23,6 +23,7 @@ class JS_Timer {
         void todoChecker(void);                      // event loop checker
         uint8_t setInterval(funcPointer, uint32_t);  // note function and durration to interval trigger
         uint8_t setTimeout(funcPointer, uint32_t);   // note function and durration to timeout trigger
+        void clearTimeout(uint8_t);                  // clear x timer
     private:
         byte addTimer(funcPointer, uint32_t, boolean);
 };

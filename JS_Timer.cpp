@@ -10,10 +10,7 @@
 
 JS_Timer::JS_Timer(void){                 // object setup
     for(byte i = 0; i < MAX_TIMERS; i++){ // for all timers
-        todos[i] = 0;
-        repeat[i] = 0;
-        wait[i] = 0;
-        startTime[i] = 0;
+      clearTimeout(i + 1);
     }                                     // instantiate to zero
 }
 
@@ -33,7 +30,17 @@ void JS_Timer::todoChecker(){     // checks timer to see if a timeout or set int
   }
 }
 
-// alias user facing functions to avoid passing extra param 
+void JS_Timer::clearTimeout(uint8_t whichTimer){ // provides a way to interupt a pending timeout
+    if(whichTimer){
+      whichTimer = whichTimer - 1;
+      todos[whichTimer] = 0;
+      repeat[whichTimer] = 0;
+      wait[whichTimer] = 0;
+      startTime[whichTimer] = 0;
+    } // given not an applicable timeout id AKA 0 ignore removing
+}
+
+// alias user facing functions to avoid passing extra param
 uint8_t JS_Timer::setTimeout(funcPointer todo, uint32_t durration){return addTimer(todo, durration, false);}
 uint8_t JS_Timer::setInterval(funcPointer todo, uint32_t durration){return addTimer(todo, durration, true);}
 
@@ -45,8 +52,8 @@ uint8_t JS_Timer::addTimer(funcPointer todo, uint32_t durration, boolean recurri
       repeat[i] = recurring;               // note if this todo recurs
       wait[i] = durration;                 // remember what we are counting down to
       startTime[i] = millis();             // need something to countdown against
-      return i;                            // return timer ID
-    }    
+      return i + 1;                        // return timer ID: 1 through MAX_TIMERS + 1: Makes it safe to default placeholder to zero
+    }
   }
   return 0xff;                          // timer not set case / too many timers (0xff == 255)
 }
